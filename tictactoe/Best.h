@@ -9,12 +9,13 @@
 #ifndef BEST_H_
 #define BEST_H_
 
-	class Best{
-	public:
-		Best(int, int, int);
-		Best(int);
-		int row, column, value;
+class Best {
 
-	};
+    public:
+	    Best(int, int, int);
+	    Best(int);
+	    int row, column, value;
+
+};
 
 #endif /* BEST_H_ */

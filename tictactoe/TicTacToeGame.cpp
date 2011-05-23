@@ -8,45 +8,37 @@
 #include "TicTacToeGame.h"
 #include <sstream>
 
-
-TicTacToeGame::TicTacToeGame()
+TicTacToeGame::TicTacToeGame(bool computerStarts)
 {
-
 	clearBoard();
-		initSide();
-}
-
-//set the characters the sides play with
-void TicTacToeGame::initSide(){
-	if (side==COMPUTER){
-		computerChar="X"; humanChar="O";
-	}
-	else{
-		computerChar="O"; humanChar="X";
+	this->computerStarts = computerStarts;
+	side = computerStarts ? COMPUTER : HUMAN;
+	
+	for(int row = 0; row < 3; row++){
+		for(int col = 0; col < 3; col++){
+            board[row][col] = EMPTY;
+	    }	
 	}
 }
 
-void TicTacToeGame::setComputerPlays(){
-	side=COMPUTER;
-	initSide();
+std::string TicTacToeGame::getHumanChar() {
+    return computerStarts ? "X" : "0" ;
 }
 
-void TicTacToeGame::setHumanPlays(){
-	this->side=HUMAN;
-	initSide();
+std::string TicTacToeGame::getComputerChar() {
+    return computerStarts ? "0" : "X" ;
 }
 
 bool TicTacToeGame::computerPlays(){
-	return side==COMPUTER;
+	return side == COMPUTER;
 }
-
 
 int TicTacToeGame::chooseMove(){
 	Best best=chooseMove(COMPUTER);
-		return best.row*3+best.column;
+	return best.row*3+best.column;
 }
 
-//minimax algorithm
+// minimax algorithm
 Best TicTacToeGame::chooseMove(int s){
 	int opp;              // Opponent
 	Best reply(0);        // Opponent's best reply
@@ -54,7 +46,6 @@ Best TicTacToeGame::chooseMove(int s){
 	int value = -1;
 	int bestRow = 0;
 	int bestColumn = 0;
-
 
 	if( s == COMPUTER )
 	{
@@ -90,7 +81,7 @@ Best TicTacToeGame::chooseMove(int s){
 
 //check if the move is a valid move
 bool TicTacToeGame::moveOk(int move){
-	if(move>=0 && move<=8 && board[move/3][move%3]==EMPTY){
+	if(move>=0 && move<=8 && board[(int)move/3][move%3]==EMPTY){
 		return true;
 	}
 	else{
@@ -100,10 +91,10 @@ bool TicTacToeGame::moveOk(int move){
 
 void TicTacToeGame::playMove(int move){
 	board[move/3][move%3] = side;
-	if(side==COMPUTER){
+	if (side == COMPUTER) {
 		side = HUMAN;
 	}
-	else{
+	else {
 		side = COMPUTER;
 	}
 }
@@ -115,11 +106,14 @@ void TicTacToeGame::clearBoard(){
 }
 
 bool TicTacToeGame::boardIsFull(){
-	for( int  row = 0; row < 3; row++ )
-	        for( int  column = 0; column < 3; column++ )
-	            if( board[ row ][ column ] == EMPTY )
-	                return false;
-	    return true;
+	for (int row = 0; row < 3; row++) {
+        for (int column = 0; column < 3; column++) {
+            if (board[row][column] == EMPTY) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 //check if the current side has won in the situation the board is in now
@@ -179,12 +173,12 @@ std::string TicTacToeGame::toString(){
 				}
 				else if(board[row][col]==HUMAN){
 					str.append("-");
-					str.append(humanChar);
+					str.append(getHumanChar());
 					str.append("-");
 				}
 				else if(board[row][col]==COMPUTER){
 					str.append("-");
-					str.append(computerChar);
+					str.append(getComputerChar());
 					str.append("-");
 				}
 				if(col != 2){
@@ -205,9 +199,12 @@ bool TicTacToeGame::gameOver(){
 }
 
 std::string TicTacToeGame::winner(){
-	if      (position==COMPUTER_WIN) 			return "computer";
-	        else if (position==HUMAN_WIN   ) 	return "human";
-	        else                                return "nobody";
+    switch (position) {
+        case COMPUTER_WIN:
+            return "computer";
+        case HUMAN_WIN:
+            return "human";
+        default:
+            return "nobody";
+    }
 }
-
-

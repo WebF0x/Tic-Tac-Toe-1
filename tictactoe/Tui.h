@@ -7,16 +7,17 @@
 
 #ifndef TUI_H_
 #define TUI_H_
+
 #include <iostream>
 #include <string>
 #include "TicTacToeGame.h"
 
 class Tui {
-public:
-	Tui();
-	int move();
-	bool nextGame();
-	TicTacToeGame t;
+    
+    public:
+        Tui();
+        int move();
+        bool nextGame();
 };
 
 #endif /* TUI_H_ */

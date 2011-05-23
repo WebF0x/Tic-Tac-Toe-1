@@ -9,43 +9,48 @@
 
 #include "Tui.h"
 
-
 Tui::Tui()
 {
-	do{
-		TicTacToeGame t;
+	while (nextGame()) {
+		TicTacToeGame * game = new TicTacToeGame(false);
 		std::cout << "***New Game***\n";
-		t.toString(); //hack because otherwise board isn't printed correctly for the first move
+		game->toString(); //hack because otherwise board isn't printed correctly for the first move
 
-		if(t.computerPlays()) 	std::cout << "I start:\n";
-		else					std::cout << "You start:\n";
-		while(!t.gameOver()){
-			if(t.computerPlays()){
-				int computerMove = t.chooseMove();
-					t.playMove(computerMove);
+		if (game->computerPlays()) {
+		    std::cout << "I start:\n";
+	    }
+		else {
+		    std::cout << "You start:\n";
+	    }
+	    
+		while(!game->gameOver()){
+			if(game->computerPlays()){
+				int computerMove = game->chooseMove();
+					game->playMove(computerMove);
 					std::cout << "Computer move: " << computerMove << "\n";
 				}
 				else{
 					int humanMove;
-					do
+                    do
 					{
-						std::cout << "Human move (0 to 8, you are "<< t.humanChar <<"):";
+						std::cout << "Human move (0 to 8, you are "<< game->getHumanChar() <<"):";
 						std::cin >> humanMove;
 					}
-					while(!t.moveOk(humanMove));
-					t.playMove(humanMove);
-					}
-			std::cout << t.toString();
+					while(!game->moveOk(humanMove));
+					game->playMove(humanMove);
+				}
+			std::cout << game->toString();
 		}
-		std::cout << "Game over. " << t.winner() << " wins\n";
-	}while (nextGame());
+		std::cout << "Game over. " << game->winner() << " wins\n";
+		delete game;
+	}
 }
 
-int main(){
+int main() {
 	new Tui();
 }
 
-bool Tui::nextGame(){
+bool Tui::nextGame() {
         char yn;
         do
         {
@@ -54,6 +59,7 @@ bool Tui::nextGame(){
             std::cout << "" << yn;
         }
         while  (!(yn=='Y' || yn=='y' || yn=='N' || yn=='n'));
+        
         return yn=='Y'|| yn=='y';
 }
 
