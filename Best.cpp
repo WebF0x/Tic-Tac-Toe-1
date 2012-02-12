@@ -8,12 +8,12 @@
 #include "Best.h"
 
 
-Best::Best(int v){
-	value = v;
+Best::Best(int value) {
+	this->value = value;
 }
 
-Best::Best(int v, int r, int c){
-	value=v;
-	row=r;
-	column=c;
+Best::Best(int value, int row, int column) {
+	this->value = value;
+	this->row = row;
+	this->column = column;
 }
